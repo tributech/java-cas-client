@@ -147,6 +147,23 @@ public final class Cas20ServiceTicketValidatorTests extends AbstractTicketValida
     }
 
     @Test
+    public void testGetMDSOLCustomAttributes() throws TicketValidationException, UnsupportedEncodingException {
+        final String USERNAME = "username";
+        final String RESPONSE = "<cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'><cas:authenticationSuccess><cas:user>"
+                + USERNAME
+                + "</cas:user>"
+                + "<user_id>88590</user_id><user_uuid>939d5334-88a4-4308-83d5-66f7d7814e80</user_uuid><user_email>my@email.com</user_email>"
+                + "</cas:authenticationSuccess></cas:serviceResponse>";
+
+        server.content = RESPONSE.getBytes(server.encoding);
+        final Assertion assertion = this.ticketValidator.validate("test", "test");
+        assertEquals(USERNAME, assertion.getPrincipal().getName());
+        assertEquals("88590", assertion.getPrincipal().getAttributes().get("id"));
+        assertEquals("939d5334-88a4-4308-83d5-66f7d7814e80", assertion.getPrincipal().getAttributes().get("uuid"));
+        assertEquals("my@email.com", assertion.getPrincipal().getAttributes().get("email"));
+    }
+
+    @Test
     public void testInvalidResponse() throws Exception {
         final String RESPONSE = "<root />";
         server.content = RESPONSE.getBytes(server.encoding);

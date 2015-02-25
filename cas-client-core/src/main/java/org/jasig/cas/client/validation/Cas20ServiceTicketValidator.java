@@ -57,7 +57,6 @@ public class Cas20ServiceTicketValidator extends AbstractCasProtocolUrlBasedTick
      * CAS server url prefix.
      *
      * @param casServerUrlPrefix the CAS Server URL prefix.
-     * @param urlFactory URL connection factory to use when communicating with the server
      */
     public Cas20ServiceTicketValidator(final String casServerUrlPrefix) {
         super(casServerUrlPrefix);
@@ -189,6 +188,7 @@ public class Cas20ServiceTicketValidator extends AbstractCasProtocolUrlBasedTick
         private Map<String, Object> attributes;
 
         private boolean foundAttributes;
+        private boolean foundSingleCustomAttribute;
 
         private String currentAttribute;
 
@@ -204,6 +204,10 @@ public class Cas20ServiceTicketValidator extends AbstractCasProtocolUrlBasedTick
                 final Attributes attributes) throws SAXException {
             if ("attributes".equals(localName)) {
                 this.foundAttributes = true;
+            } else if (localName.startsWith("user_")) {
+                this.foundSingleCustomAttribute = true;
+                this.value = new StringBuilder();
+                this.currentAttribute = localName.replaceAll("user_", "");
             } else if (this.foundAttributes) {
                 this.value = new StringBuilder();
                 this.currentAttribute = localName;
@@ -223,7 +227,8 @@ public class Cas20ServiceTicketValidator extends AbstractCasProtocolUrlBasedTick
             if ("attributes".equals(localName)) {
                 this.foundAttributes = false;
                 this.currentAttribute = null;
-            } else if (this.foundAttributes) {
+            } else if (this.foundAttributes || this.foundSingleCustomAttribute) {
+                this.foundSingleCustomAttribute = false;
                 final Object o = this.attributes.get(this.currentAttribute);
 
                 if (o == null) {

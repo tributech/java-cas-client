@@ -6,7 +6,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jasig.cas.client</groupId>
-    <version>3.3.4-SNAPSHOT</version>
+    <version>3.3.4-AppFusions-0.1-SNAPSHOT</version>
     <artifactId>cas-client</artifactId>
     <packaging>pom</packaging>
 
@@ -23,9 +23,9 @@
     </issueManagement>
 
     <scm>
-        <connection>scm:git:git@github.com:Jasig/java-cas-client.git</connection>
-        <developerConnection>scm:git:git@github.com:Jasig/java-cas-client.git</developerConnection>
-        <url>https://github.com/Jasig/java-cas-client</url>
+        <connection>scm:git:git@github.com:tributech/java-cas-client.git</connection>
+        <developerConnection>scm:git:git@github.com:tributech/java-cas-client.git</developerConnection>
+        <url>https://github.com/tributech/java-cas-client</url>
       <tag>HEAD</tag>
   </scm>
 
